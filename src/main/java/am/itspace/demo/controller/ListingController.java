@@ -1,8 +1,6 @@
 package am.itspace.demo.controller;
 
-import am.itspace.demo.model.Category;
 import am.itspace.demo.model.Listing;
-import am.itspace.demo.model.User;
 import am.itspace.demo.service.ListingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -60,27 +58,27 @@ public class ListingController {
     }
 
     @PostMapping()
-    public void addListing(Listing listing){
+    public void addListing(@RequestBody Listing listing){
 
         listingService.addListing(listing);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Listing> updateListing(@RequestBody Listing listing, @PathVariable Integer id,
-                                                 @RequestBody Category category, @RequestBody User user) {
-        try {
+    @PutMapping("{id}")
+    public ResponseEntity<Listing> updateListing(@PathVariable Integer id, @RequestBody Listing listing){
+
+        try{
             Listing existingListing = listingService.getById(id);
             if (existingListing.getId().equals(id)){
                 listing.setId(id);
-                listing.setCategory(category);
-                listing.setUser(user);
                 listingService.addListing(listing);
             }
             return new ResponseEntity<>(listing, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteListing(@PathVariable Integer id){

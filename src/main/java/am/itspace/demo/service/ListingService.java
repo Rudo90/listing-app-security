@@ -1,13 +1,10 @@
 package am.itspace.demo.service;
 
-import am.itspace.demo.model.Category;
 import am.itspace.demo.model.Listing;
-import am.itspace.demo.model.User;
 import am.itspace.demo.repositories.ListingRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
