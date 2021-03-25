@@ -21,8 +21,8 @@ public class Listing {
     private String title;
     private String description;
     private Double price;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 }
