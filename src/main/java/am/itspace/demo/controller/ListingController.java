@@ -63,7 +63,7 @@ public class ListingController {
         listingService.addListing(listing);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Listing> updateListing(@PathVariable Integer id, @RequestBody Listing listing){
 
         try{

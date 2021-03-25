@@ -21,6 +21,7 @@ public class User {
     private Integer id;
     private String name;
     private String surname;
+    private String username;
     private String email;
     @Column
     private String password;
