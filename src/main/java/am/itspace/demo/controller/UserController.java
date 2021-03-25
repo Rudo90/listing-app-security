@@ -69,6 +69,19 @@ public class UserController {
     }
 
 
+
+
+//        try {
+//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRepo.findByUsername(authenticationRequest.getUsername()),
+//                    userRepo.findByPassword(authenticationRequest.getPassword())));
+//            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(authenticationRequest.getUsername());
+//            String jwt = jwtUtil.generateToken(userDetails);
+//            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+//        } catch (BadCredentialsException e){
+//            throw new Exception("Invalid username or password", e);
+//        }
+
+
     @PostMapping()
     public void addUser(@RequestBody User user) throws DuplicateMemberException {
         if (userRepo.findByEmail(user.getEmail()).isEmpty()){
