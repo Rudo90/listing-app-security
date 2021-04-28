@@ -5,13 +5,12 @@ import am.itspace.demo.model.AuthenticationResponse;
 import am.itspace.demo.model.User;
 import am.itspace.demo.repositories.UserRepo;
 import am.itspace.demo.security.UserDetailsServiceImpl;
-import am.itspace.demo.service.UserService;
+import am.itspace.demo.serviceImpl.UserServiceImpl;
 import am.itspace.demo.util.JwtUtil;
 import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
@@ -68,18 +67,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorizing does not succeedded");
     }
 
-
-
-
-//        try {
-//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRepo.findByUsername(authenticationRequest.getUsername()),
-//                    userRepo.findByPassword(authenticationRequest.getPassword())));
-//            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(authenticationRequest.getUsername());
-//            String jwt = jwtUtil.generateToken(userDetails);
-//            return ResponseEntity.ok(new AuthenticationResponse(jwt));
-//        } catch (BadCredentialsException e){
-//            throw new Exception("Invalid username or password", e);
-//        }
 
 
     @PostMapping()
