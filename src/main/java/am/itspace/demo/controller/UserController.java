@@ -5,13 +5,12 @@ import am.itspace.demo.model.AuthenticationResponse;
 import am.itspace.demo.model.User;
 import am.itspace.demo.repositories.UserRepo;
 import am.itspace.demo.security.UserDetailsServiceImpl;
-import am.itspace.demo.service.UserService;
+import am.itspace.demo.serviceImpl.UserServiceImpl;
 import am.itspace.demo.util.JwtUtil;
 import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
@@ -34,7 +33,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<List<User>> getAllUsers() {
         try {
-            List<User> list = userService.getAllUsers();
+            List<User> list = userServiceImpl.getAllUsers();
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -44,7 +43,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         try {
-            User user = userService.getById(id);
+            User user = userServiceImpl.getById(id);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,25 +67,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorizing does not succeedded");
     }
 
-
-
-
-//        try {
-//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRepo.findByUsername(authenticationRequest.getUsername()),
-//                    userRepo.findByPassword(authenticationRequest.getPassword())));
-//            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(authenticationRequest.getUsername());
-//            String jwt = jwtUtil.generateToken(userDetails);
-//            return ResponseEntity.ok(new AuthenticationResponse(jwt));
-//        } catch (BadCredentialsException e){
-//            throw new Exception("Invalid username or password", e);
-//        }
-
-
     @PostMapping()
     public void addUser(@RequestBody User user) throws DuplicateMemberException {
         if (userRepo.findByEmail(user.getEmail()).isEmpty()){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userService.addUser(user);
+            userServiceImpl.addUser(user);
         } else {
             throw new DuplicateMemberException ("user already exists!");
         }
@@ -95,10 +79,10 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Integer id) {
         try {
-            User existingUser = userService.getById(id);
+            User existingUser = userServiceImpl.getById(id);
             if (existingUser.getId().equals(id)) {
                 user.setId(id);
-                userService.addUser(user);
+                userServiceImpl.addUser(user);
             }
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (NoSuchElementException e) {
@@ -109,7 +93,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
         try {
-            userService.deleteUser(id);
+            userServiceImpl.deleteUser(id);
             String message = "User was deleted successfully";
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (NoSuchElementException e) {

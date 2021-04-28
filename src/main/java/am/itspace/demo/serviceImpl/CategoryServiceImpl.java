@@ -1,7 +1,8 @@
-package am.itspace.demo.service;
+package am.itspace.demo.serviceImpl;
 
 import am.itspace.demo.model.Category;
 import am.itspace.demo.repositories.CategoryRepo;
+import am.itspace.demo.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepo categoryRepo;
 

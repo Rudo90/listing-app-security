@@ -1,7 +1,8 @@
-package am.itspace.demo.service;
+package am.itspace.demo.serviceImpl;
 
 import am.itspace.demo.model.User;
 import am.itspace.demo.repositories.UserRepo;
+import am.itspace.demo.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
 
     public List<User> getAllUsers(){
@@ -20,8 +21,8 @@ public class UserService {
         return userRepo.findById(id).get();
     }
 
-    public void addUser(User user){
-        userRepo.save(user);
+    public User addUser(User user){
+       return userRepo.save(user);
     }
 
     public void deleteUser(Integer id){

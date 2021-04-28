@@ -1,7 +1,7 @@
 package am.itspace.demo.controller;
 
 import am.itspace.demo.model.Listing;
-import am.itspace.demo.service.ListingService;
+import am.itspace.demo.serviceImpl.ListingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import java.util.NoSuchElementException;
 @RequestMapping("/listings")
 public class ListingController {
 
-    private final ListingService listingService;
+    private final ListingServiceImpl listingServiceImpl;
 
     @GetMapping()
     public ResponseEntity<List<Listing>> getAllListings(){
         try {
-            List<Listing> list = listingService.getAll();
+            List<Listing> list = listingServiceImpl.getAll();
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -30,7 +30,7 @@ public class ListingController {
     @GetMapping("/byUser/{email}")
     public ResponseEntity<List<Listing>> getByEmail (@PathVariable String email){
         try {
-            List<Listing> list = listingService.getByEmail(email);
+            List<Listing> list = listingServiceImpl.getByEmail(email);
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -40,7 +40,7 @@ public class ListingController {
     @GetMapping("/byCategory/{categoryId}")
     public ResponseEntity<List<Listing>> getByCategoryId (@PathVariable Integer categoryId){
         try {
-            List<Listing> list = listingService.getByCategoryId(categoryId);
+            List<Listing> list = listingServiceImpl.getByCategoryId(categoryId);
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -50,7 +50,7 @@ public class ListingController {
     @GetMapping("/{id}")
     public ResponseEntity<Listing> getById (@PathVariable Integer id){
         try{
-            Listing listing = listingService.getById(id);
+            Listing listing = listingServiceImpl.getById(id);
             return new ResponseEntity<>(listing, HttpStatus.OK);
         } catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -60,17 +60,17 @@ public class ListingController {
     @PostMapping()
     public void addListing(@RequestBody Listing listing){
 
-        listingService.addListing(listing);
+        listingServiceImpl.addListing(listing);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Listing> updateListing(@PathVariable Integer id, @RequestBody Listing listing){
 
         try{
-            Listing existingListing = listingService.getById(id);
+            Listing existingListing = listingServiceImpl.getById(id);
             if (existingListing.getId().equals(id)){
                 listing.setId(id);
-                listingService.addListing(listing);
+                listingServiceImpl.addListing(listing);
             }
             return new ResponseEntity<>(listing, HttpStatus.OK);
         } catch (NoSuchElementException e){
@@ -83,7 +83,7 @@ public class ListingController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteListing(@PathVariable Integer id){
         try {
-            listingService.deleteListing(id);
+            listingServiceImpl.deleteListing(id);
             String message = "Listing was deleted successfully";
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (NoSuchElementException e){
